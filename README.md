@@ -4,17 +4,17 @@ This script exports fbx for Assetto Corsa tracks in a single click. Created for 
 ## What does it exactly do?
 - Makes sure all objects are unlinked (because cloned objects (copied with alt + D) will have spurrious materials when exported to fbx)
 - Makes sure at least one material slot is present on all objects and all slots have materials assigned (because objects with no or invalid slots will get autocreated FBX_MATERIALs)
-- Makes sure meshes don't have more than 65k vertices (because AC works with 16bit indices)
+- Makes sure meshes don't have more than 65k vertices/normals/uvs (because AC works with 16bit indices)
 - Sets correct fbx export units and settings
+- Opens [KsEditorAt](https://ascobash.wordpress.com/2015/07/22/kseditor/) with the exported FBX file. Make sure the path to KsEditorAt is set correctly (you can use shift right click -> copy as path).
 
 ### How to install
-1. Edit > Preferences.. > Add-Ons > Install.. and select nothke_ac_exporter.py, then activate it on the checkbox
+1. Edit > Preferences.. > Add-Ons > Install.. and select nothke_ac_exporter_v2.py, then activate it on the checkbox
 2. A new tab will appear on the right of the viewport called "ACExporter"
 
 ### How to use
-1. Save your blend file (and do it every time before export, because you'll have to revert after pressing "Export")
+1. Select an object from the collection you want to export or the collection itself.
 2. Open the ACExport tab: On the right side of the viewport > ACExporter
-3. Type the name of the exporting collection. Make sure that only meshes are present. Curves, backgrounds, lights etc. will be invalid.
-4. Type in the desired name of the fbx file
-5. Hit "Export FBX". If there are were no warnings, now be in the same folder where .blend is.
-6. Revert to your previous save (File > Revert) so that linked objects are preserved
+3. Hit "Export FBX". If there are were no warnings, now be in the same folder where .blend is. KsEditorAt will also open if you have given the path to it.
+
+You can also bind a shortcut to the "Export FBX" button by right clicking it and clicking "Assign Shortcut"

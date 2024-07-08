@@ -110,46 +110,47 @@ class NOTHKE_OT_ACExport(bpy.types.Operator):
             return {'FINISHED'}
 
         scene = bpy.context.scene
-        
+
         bpy.ops.ed.undo_push(message="Prepare AC FBX")
 
-        # Deselect all
-        bpy.ops.object.select_all(action='DESELECT')
-
-        # Find collection
-        lc = bpy.context.view_layer.layer_collection
-        layerColl = recurLayerCollection(lc, turn_collection_hierarchy_into_path(bpy.context.view_layer.objects.active))
-        
-        if layerColl is None:
-            self.report({"ERROR"}, "Collection " + collectionName + " doesn't exist!")
-            return {'FINISHED'}
-            
-        print('Found collection: ' + layerColl.name)
-        bpy.context.view_layer.active_layer_collection = layerColl
-
-        filename = f"{bpy.context.view_layer.active_layer_collection.name}"
-        fpath = basedir + '/' + filename
-
-        # select all in collection (and child collections)
-        objs = layerColl.collection.all_objects
-
-        for ob in objs:
-            ob.select_set(True)
-
-        # check if objects exist
-        if not bpy.context.selected_objects:
-            self.report({"ERROR"}, "" + collectionName + " collection is empty!")
-            return {'FINISHED'}
-
-        # unlink object data
-        bpy.ops.object.make_single_user(type='SELECTED_OBJECTS', object=True, obdata=True, material=False, animation=False)
-        print('Unlinked objects')
-
-        selection = bpy.context.selected_objects
-
-        #bpy.ops.object.convert(target='MESH') # not working! context is incorrect
-
         try:
+            # Deselect all
+            bpy.ops.object.select_all(action='DESELECT')
+
+            # Find collection
+            lc = bpy.context.view_layer.layer_collection
+            layerColl = recurLayerCollection(lc, turn_collection_hierarchy_into_path(bpy.context.view_layer.objects.active))
+            
+            if layerColl is None:
+                self.report({"ERROR"}, "Collection not found")
+                return {'FINISHED'}
+                
+            print('Found collection: ' + layerColl.name)
+            bpy.context.view_layer.active_layer_collection = layerColl
+
+            filename = f"{bpy.context.view_layer.active_layer_collection.name}"
+            fpath = basedir + '/' + filename
+
+            # select all in collection (and child collections)
+            objs = layerColl.collection.all_objects
+
+            for ob in objs:
+                ob.select_set(True)
+
+            # check if objects exist
+            if not bpy.context.selected_objects:
+                self.report({"ERROR"}, "" + collectionName + " collection is empty!")
+                return {'FINISHED'}
+
+            # unlink object data
+            bpy.ops.object.make_single_user(type='SELECTED_OBJECTS', object=True, obdata=True, material=False, animation=False)
+            print('Unlinked objects')
+
+            selection = bpy.context.selected_objects
+
+            #bpy.ops.object.convert(target='MESH') # not working! context is incorrect
+
+
             # make sure all objects..
             for ob in bpy.context.selected_editable_objects:
                 # ..are meshes,
